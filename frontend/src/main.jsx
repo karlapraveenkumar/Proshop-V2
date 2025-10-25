@@ -10,8 +10,10 @@ import {
 import './assets/styles/bootstrap.custom.css'
 import './assets/styles/index.css'
 import App from './App.jsx'
-import HomeSecreen from './screens/HomeSecreen.jsx';
+import HomeSecreen from './screens/HomeScreen.jsx';
 import ProductScreen from './screens/ProductScreen.jsx';
+import {Provider} from 'react-redux';
+import store from './store.js';
 
 
 const router = createBrowserRouter(
@@ -25,6 +27,8 @@ const router = createBrowserRouter(
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <RouterProvider router={router} />
+    <Provider store={store}>
+      <RouterProvider router={router} />
+    </Provider>
   </StrictMode>,
 )
