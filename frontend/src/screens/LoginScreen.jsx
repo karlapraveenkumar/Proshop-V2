@@ -17,8 +17,8 @@ const LoginScreen = () => {
 
     const [login, {isLoading}] = useLoginMutation();
     const { userInfo } = useSelector((state) => state.auth);
-    const search = useLocation();
-    const sp = new URLSearchParams(search);
+    const location = useLocation();
+    const sp = new URLSearchParams(location.search);
     const redirect = sp.get('redirect') || '/';
 
     useEffect(() => {
