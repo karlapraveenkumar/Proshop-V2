@@ -69,18 +69,32 @@ const ProductEditScreen = () => {
       setDescription(product.description);
     }
   }, [product]);
-  
-  const uploadFileHandler = async (e) => {
-    const formData = new FormData();
-    formData.append('image', e.target.files[0]);
-    try {
-      const res = await uploadProductImage(formData).unwrap();
-      toast.success(res.message);
-      setImage(res.image);
-    } catch (err) {
-      toast.error(err?.data?.message || err.error);
-    }
-  };
+
+  // const uploadFileHandler = async (e) => {
+  //   const formData = new FormData();
+  //   formData.append('image', e.target.files[0]);
+  //   try {
+  //     const res = await uploadProductImage(formData).unwrap();
+  //     toast.success(res.message);
+  //     setImage(res.image);
+  //   } catch (err) {
+  //     toast.error(err?.data?.message || err.error);
+  //   }
+  // };
+
+const BACKEND_URL = process.env.NODE_ENV === "production" ? "" : "http://localhost:5000";
+
+const uploadFileHandler = async (e) => {
+  const formData = new FormData();
+  formData.append('image', e.target.files[0]);
+  try {
+    const res = await uploadProductImage(formData).unwrap();
+    toast.success(res.message);
+    setImage(BACKEND_URL + res.image);
+  } catch (err) {
+    toast.error(err?.data?.message || err.error);
+  }
+};
 
   return (
     <>
