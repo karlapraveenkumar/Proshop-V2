@@ -1,19 +1,21 @@
-import React from "react";
-import { LinkContainer } from "react-router-bootstrap";
-import { Row, Col, Table, Button } from "react-bootstrap";
-import { FaEdit, FaTimes, FaTrash } from "react-icons/fa";
+import { Row, Col, Table, Button, Image } from "react-bootstrap";
+import { Link } from "react-router-dom";
+import { FaEdit, FaTrash } from "react-icons/fa";
 import { toast } from "react-toastify";
 import Message from "../../components/Message";
 import Loader from "../../components/Loader";
 import {
   useGetProductsQuery,
   useCreateProductMutation,
+  useDeleteProductMutation,
 } from "../../slices/productsApiSlice";
 
 const ProductListScreen = () => {
   const { data, isLoading, error, refetch } = useGetProductsQuery();
   const [createProduct, { isLoading: loadingCreate }] =
     useCreateProductMutation();
+
+  const [deleteProduct, { isLoading: loadingDelete }] = useDeleteProductMutation();
 
   const createProductHandler = async () => {
     if (window.confirm("Are you sure you want to create a new product?")) {
@@ -26,9 +28,15 @@ const ProductListScreen = () => {
     }
   };
 
-  const deleteHandler = (id) => {
+  const deleteHandler = async (id) => {
     if (window.confirm("Are you sure you want to delete this product?")) {
-      console.log("delete product", id);
+      try {
+        await deleteProduct(id);
+        toast.success("Product deleted successfully");
+        refetch();
+      } catch (err) {
+        toast.error(err?.data?.message || err.error);
+      }
     }
   };
 
@@ -46,6 +54,7 @@ const ProductListScreen = () => {
       </Row>
 
       {loadingCreate && <Loader />}
+      {loadingDelete && <Loader />}
 
       {isLoading ? (
         <Loader />
@@ -74,6 +83,7 @@ const ProductListScreen = () => {
                   <td>{product.brand}</td>
                   <td>
                     <Button
+                      as={Link}
                       to={`/admin/product/${product._id}/edit`}
                       variant="light"
                       className="btn-sm mx-2"

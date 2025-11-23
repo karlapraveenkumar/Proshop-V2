@@ -1,6 +1,6 @@
 import express from "express";
 const router = express.Router();
-import {getProducts, getProductById, createProduct} from "../controllers/productController.js";
+import {getProducts, getProductById, createProduct, updateProduct, deleteProduct} from "../controllers/productController.js";
 import {protect, admin} from "../middleware/authMiddleware.js";
 
 /*
@@ -16,6 +16,6 @@ router.get('/:id', asyncHandler(async(req,res)=>{
     getProductById();
 }));
 */
-router.route('/:id').get(getProductById);
+router.route('/:id').get(getProductById).put(protect, admin, updateProduct).delete(protect, admin, deleteProduct);
 
 export default router;
