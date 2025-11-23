@@ -59,6 +59,9 @@ if(process.argv[2] === '-d'){
     importData();
 }
 
+//To import data run this command in backend path : npm run data:import
+//To destroy data run this command in backend path : npm run data:destroy
+
 // console.log(process.argv); //Run it using node backend/seeder -d   but everything inside the seeder should be commented except this console  
 //output will be like
 /*[
