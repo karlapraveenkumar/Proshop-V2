@@ -20,14 +20,11 @@ const app = express();
 
 //Body parser middleware
 app.use(express.json());
-app.use(express.urlencoded({ exptended : true}))
+app.use(express.urlencoded({ extended: true }))
 
 //Cookie parser middleware
 app.use(cookieParser());
 
-app.get('/', (req,res)=> {
-    res.send('API is running....');
-});
 
 app.use('/api/products', productRoutes);
 app.use('/api/users', userRoutes);
@@ -35,25 +32,23 @@ app.use('/api/orders',orderRoutes);
 app.use('/api/upload', uploadRoutes);
 //Make uploads folder static
 const __dirname = path.resolve(); //To get current directory name
-app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
+// serve uploads from the project's uploads folder
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 
 
 app.get('/api/config/paypal', (req,res)=> res.send({clientId: process.env.PAYPAL_CLIENT_ID}));
 
 if (process.env.NODE_ENV === 'production') {
-  const __dirname = path.resolve();
-  app.use('/uploads', express.static('/var/data/uploads'));
-  app.use(express.static(path.join(__dirname, '/frontend/build')));
+  // Serve static assets from the React app
+  app.use(express.static(path.join(__dirname, 'frontend', 'dist')));
 
-  // any route that is not api route, api will be redirected to index.html of react app
-  // Use a leading slash in the wildcard route so path-to-regexp parses it correctly
-  app.get('/*splat', (req, res) =>
-    res.sendFile(path.resolve(__dirname, 'frontend', 'build', 'index.html'))
+  // Catch-all handler: return React's index.html for any non-API route
+  app.get('*', (req, res) =>
+    res.sendFile(path.resolve(__dirname, 'frontend', 'dist', 'index.html'))
   );
 } else {
-  const __dirname = path.resolve();
-  app.use('/uploads', express.static(path.join(__dirname, '/uploads')));
+  // In development just confirm the API is running
   app.get('/', (req, res) => {
     res.send('API is running....');
   });
