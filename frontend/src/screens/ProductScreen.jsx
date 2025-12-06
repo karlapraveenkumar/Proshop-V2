@@ -9,19 +9,9 @@ import Message from "../components/Message.jsx";
 import { addToCart } from "../slices/cartSlice.js";
 import { useDispatch, useSelector } from "react-redux";
 import {toast} from 'react-toastify';
+import Meta from "../components/Meta.jsx";
 
 const ProductScreen = () => {
-  // const [product, setProduct] = useState({});
-  // const { id: productId } = useParams();
-  // useEffect(()=>{
-  //     const fetchProducts = async()=>{
-  //         const {data} = await axios.get(`/api/products/${productId}`);
-  //         setProduct(data);
-  //     }
-  //     fetchProducts();
-  // },[productId]);
-
-  // const product = products.find(p => p._id === productId);
 
   const [qty, setQty] = useState(1);
   const [rating, setRating] = useState(0);
@@ -66,21 +56,21 @@ const ProductScreen = () => {
 
   return (
     <>
+      <Link className="btn btn-light my-3" to="/">
+        Go Back
+      </Link>
       {isLoading ? (
         <Loader />
       ) : error ? (
         <Message variant="danger">{error?.data?.message || error.error}</Message>
       ) : (
         <>
-          <Link className="btn btn-light my-3" to="/">
-            Go Back
-          </Link>
-          <>
+          <Meta title={product.name} description={product.description}/>
           <Row>
-            <Col md={5}>
+            <Col md={6}>
               <Image src={product.image} alt={product.name} fluid />
             </Col>
-            <Col md={4}>
+            <Col md={3}>
               <ListGroup variant="flush">
                 <ListGroup.Item>
                   <h3>{product.name}</h3>
@@ -210,7 +200,6 @@ const ProductScreen = () => {
             </Col>
           </Row>
           </>
-        </>
         )}   
     </>
   );

@@ -7,27 +7,23 @@ import Loader from "../components/Loader.jsx";
 import Message from "../components/Message.jsx";
 import {Link, useParams} from 'react-router-dom';
 import Paginate from "../components/Paginate.jsx";
+import ProductCarousel from "../components/ProductCarousel.jsx";
+import Meta from "../components/Meta.jsx";
 
 const HomeScreen = () => {
-  // const [products, setProducts] = useState([]);
-  // useEffect(()=>{
-  //   const fetchProducts = async ()=>{
-  //     const {data} = await axios.get('/api/products');
-  //     setProducts(data);
-  //   };
-  //   fetchProducts();
-  // },[])
+
   const { pageNumber, keyword } = useParams();
   const { data, isLoading, error } = useGetProductsQuery({ keyword, pageNumber});
   return (
     <>
-      {keyword && <Link to='/' className="btn btn-light mb-4">Go Back</Link>}
+      {!keyword ? <ProductCarousel /> : <Link to='/' className="btn btn-light mb-4">Go Back</Link>}
       {isLoading ? (
         <Loader />
       ) : error ? (
         <Message variant="danger">{error?.data?.message || error.error}</Message>
       ) : (
         <>
+          <Meta />
           <h1>Latest Products</h1>
           <Row>
               {data.products.map((product) => (
