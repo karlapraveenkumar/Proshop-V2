@@ -48,7 +48,7 @@ if (process.env.NODE_ENV === 'production') {
 
   // any route that is not api route, api will be redirected to index.html of react app
   // Use a leading slash in the wildcard route so path-to-regexp parses it correctly
-  app.get('/*', (req, res) =>
+  app.get('*', (req, res) =>
     res.sendFile(path.resolve(__dirname, 'frontend', 'build', 'index.html'))
   );
 } else {
