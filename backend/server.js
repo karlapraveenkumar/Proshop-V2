@@ -46,7 +46,9 @@ if (process.env.NODE_ENV === 'production') {
   app.use('/uploads', express.static('/var/data/uploads'));
   app.use(express.static(path.join(__dirname, '/frontend/build')));
 
-  app.get('*', (req, res) =>
+  // any route that is not api route, api will be redirected to index.html of react app
+  // Use a leading slash in the wildcard route so path-to-regexp parses it correctly
+  app.get('/*', (req, res) =>
     res.sendFile(path.resolve(__dirname, 'frontend', 'build', 'index.html'))
   );
 } else {
