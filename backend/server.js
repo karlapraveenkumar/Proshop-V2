@@ -44,7 +44,8 @@ if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, 'frontend', 'dist')));
 
   // Catch-all handler: return React's index.html for any non-API route
-  app.get('*', (req, res) =>
+  // Use a path-to-regexp compatible pattern so Express v5 doesn't error on '*'
+  app.get('/:pathMatch(.*)*', (req, res) =>
     res.sendFile(path.resolve(__dirname, 'frontend', 'dist', 'index.html'))
   );
 } else {
